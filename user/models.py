@@ -2,20 +2,62 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import BaseUserManager
 
+
+
+class ServicesModel(models.Model):
+    title = models.CharField(max_length=100)
+    
+
+
+class WorkshopModel(models.Model):
+    title = models.CharField(max_length=100)
+
+
+class EducationalBackgroundsModel(models.Model):
+    title = models.CharField(max_length=100)
+
+
+class CityModel(models.Model):
+    name = models.CharField(max_length=120)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 class CustomUserManager(BaseUserManager):
-    def create_user(self, name, phone_number, **extra_fields):
-        if not phone_number:
-            raise ValueError('The Phone number must be set')
-        user = self.model(name=name, phone_number=phone_number, **extra_fields)
+    def create_user(self, name, **extra_fields):
+        extra_fields.setdefault('is_staff', False)
+        extra_fields.setdefault('is_superuser', False)
+
+        user = self.model(name=name, **extra_fields)
         user.set_unusable_password()  # پسورد را غیرفعال می‌کند
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, phone_number, name="ادمین", password=None, **extra_fields): #TODO role 
+    def create_superuser(self, name="ادمین", password=None, **extra_fields): #TODO role 
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
 
-        user = self.model(name=name, phone_number=phone_number, **extra_fields)
+        user = self.model(name=name, **extra_fields)
         
         if password:
             user.set_password(password)  # پسورد را فعال می‌کند برای سوپر یوزر
@@ -32,17 +74,37 @@ class CustomUserManager(BaseUserManager):
 
 
 class UserModel(AbstractBaseUser):
-    ROLE_CHOICES = (
-        ('admin', 'Admin'),
-        ('simple', 'Simple User'),
-        ('authenticated', 'Authenticated User')
+    CONSULTING_TIME_CHOICES = (
+        ('ten', '10'),
+        ('fifteen', '15'),
+        ('twenty', '20'),
+        ('twentyFive', '25'),
+        ('thirty', '30'),
+        ('thirtyFive', '35'),
+        ('forty', '40'),
+        ('fortyFive', '45'),
+        ('fifty', '50'),
+        ('fiftyFive', '55'),
+        ('sixty', '60'),
     )
-    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default="simple")
+    
     name = models.CharField(max_length=150)
     lastName = models.CharField(max_length=100)
     phone_number = models.CharField(max_length=15, unique=True)
     nationalCode = models.CharField(max_length=22)
-    city = models
+    age = models.CharField(max_length=3)
+    image = models.ImageField(upload_to="userImage/")
+    descriptions = models.TextField()
+    job = models.CharField(max_length=100, default="مشاور ، روانشناس")
+    office_address = models.TextField(max_length=1000)
+    phone_number_consulting = models.CharField(max_length=20)
+    consulting_time = models.CharField(max_length=50, choices=CONSULTING_TIME_CHOICES, default="ten")
+
+    services = models.ManyToManyField(ServicesModel)
+    education = models.ManyToManyField(EducationalBackgroundsModel)
+    workshops = models.ManyToManyField(WorkshopModel)
+    city = models.ForeignKey(CityModel, on_delete=models.CASCADE)
+
     is_verified = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
@@ -50,7 +112,7 @@ class UserModel(AbstractBaseUser):
 
 
     USERNAME_FIELD = 'phone_number' 
-    # REQUIRED_FIELDS = ['phone_number'] 
+  
 
 
 
