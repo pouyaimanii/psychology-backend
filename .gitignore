@@ -1,0 +1,52 @@
+# بی‌توجهی به فایل‌های باینری و کش
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+
+# پوشه‌های مربوط به محیط مجازی
+venv/
+env/
+*.venv
+*.env
+
+# فایل‌های مرتبط با IDE ها
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# مخفی‌سازی فایل‌های مربوط به سیستم عامل
+.DS_Store
+Thumbs.db
+
+# فایل‌های لاگ و خروجی‌های موقت
+*.log
+*.out
+*.pid
+*.tar.gz
+*.zip
+
+# فایل‌های پایگاه‌داده محلی (در صورت وجود)
+db.sqlite3
+*.sqlite3
+
+# فایل‌های مرتبط با پوشه media و static
+/media/
+staticfiles/
+
+# اطلاعات حساس و متغیرهای محیطی
+.env
+*.secrets
+
+# خروجی‌های مرتبط با migrations
+*/migrations/*.pyc
+*/migrations/*.py
+!*/migrations/__init__.py
+
+# فایل‌های مرتبط با تست‌ها و پوشش کد
+htmlcov/
+.coverage
+.tox/
+nosetests.xml
+pytest_cache/
