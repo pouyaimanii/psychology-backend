@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
-
+import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-$jwfx42%u5_2@ctc28!%s)9btn^3yv$f#)ycr2!+deh3jf7lki
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+# ALLOWED_HOSTS = ['192.168.1.103', 'localhost', '127.0.0.1', '0.0.0.0']
 ALLOWED_HOSTS = []
 
 
@@ -43,6 +43,8 @@ INSTALLED_APPS = [
 
     #frameworks 
     'rest_framework',
+
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
@@ -53,8 +55,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
 ]
-
+# MIDDLEWARE.insert(1, 'corsheaders.middleware.CorsMiddleware')
 ROOT_URLCONF = 'psychology.urls'
 
 TEMPLATES = [
@@ -127,3 +131,17 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # آدرس فرانت‌اند
+]
+
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+# CORS_ALLOW_ALL_ORIGINS = True  # برای تست، همه درخواست‌ها رو قبول کن
+
+# ALLOWED_HOSTS = ['*']
